@@ -1,6 +1,173 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convite Interativo</title>
+
+<style>
+body {
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+}
+
+/* páginas */
+.page {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    
+    /* NOVO: Propriedade para Transição Suave */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Transiciona a opacidade em 0.5s */
+}
+
+.page.active {
+    display: flex;
+    /* NOVO: Aumenta a opacidade para mostrar a página */
+    opacity: 1;
+}
+
+img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* clique invisível */
+#start {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+}
+
+/* tela abrir */
+.bg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+/* OTIMIZAÇÃO 1: Pré-carregamento da imagem 'abrir.png' via CSS */
+/* Isso garante que a imagem do fundo p3 seja carregada mais cedo. */
+.bg-preload {
+    background-image: url('abrir.png');
+    display: none; 
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="audio.mp3" type="audio/mpeg">
+</audio>
+
+<div style="display: none;">
+    <img src="pagina3.png" alt="Pré-carregamento">
+    <img src="capa.png" alt="Pré-carregamento">
+</div>
+
+
+<div id="p1" class="page active">
+    <img src="capa.png">
+    <div id="start"></div>
+</div>
+
+<div id="p2" class="page">
+    <video id="video" muted playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+</div>
+
+<div id="p3" class="page">
+    <div class="bg" id="abrir" style="background-image:url('abrir.png')"></div>
+</div>
+
+<div id="p4" class="page">
+    <img src="pagina3.png">
+</div>
+
+<div class="bg-preload"></div>
+
+<script>
+const audio = document.getElementById('bgMusic');
+const video = document.getElementById('video');
+const pages = document.querySelectorAll('.page');
+
+function show(n) {
+    // 1. Remove a classe 'active' da página atual (inicia o fade-out)
+    pages.forEach(p => {
+        if (p.classList.contains('active')) {
+            p.classList.remove('active');
+        }
+    });
+
+    // 2. Aguarda um curto período de tempo para permitir que o fade-out comece.
+    // Isso garante que a página antiga não desapareça instantaneamente.
+    setTimeout(() => {
+        // 3. Oculta todas as páginas (display: none)
+        pages.forEach(p => {
+            p.style.display = 'none';
+        });
+
+        // 4. Mostra a nova página e adiciona a classe 'active' (inicia o fade-in)
+        const nextPage = document.getElementById('p' + n);
+        if (nextPage) {
+            nextPage.style.display = 'flex';
+            // Necessário um pequeno atraso (0ms) ou requestAnimationFrame para garantir que a 
+            // mudança de display (de none para flex) ocorra antes de aplicar o opacity: 1
+            requestAnimationFrame(() => {
+                 nextPage.classList.add('active');
+            });
+        }
+    }, 10); // Atraso mínimo
+
+}
+
+/* CLIQUE ÚNICO – DESBLOQUEIA ÁUDIO + VÍDEO */
+document.getElementById('start').addEventListener('click', () => {
+
+    audio.volume = 1; 
+    audio.play().catch(error => {
+        console.error("Falha ao iniciar o áudio:", error);
+    });
+
+    show(2);
+
+    video.play().catch(error => {
+        console.error("Falha ao iniciar o vídeo:", error);
+    });
+
+}, { once:true });
+
+/* FINAL DO VÍDEO */
+video.onended = () => {
+    show(3); 
+};
+
+/* ABRIR PDF */
+document.getElementById('abrir').onclick = () => {
+    window.open('pagina3.pdf', '_blank');
+    show(4);
+};
+</script>
+<div style="display: none !important; visibility: hidden; pointer-events: none;" aria-hidden="true">
+    © 2026 Cristiane Oliveira. Todos os direitos reservados. 
+    Este software, design e algoritmos estão protegidos pela Lei de Direitos Autorais (Lei nº 9.610/98). 
+</div>
+
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
     <meta charset="UTF-8">
     <title>Maria Cecilia 4 anos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
