@@ -3,32 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maria Cecilia - 4 Anos</title>
-
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.convitesmagia.com.br/mariacecilia/">
-<meta property="og:title" content="Convite Especial: Maria Cecilia 🎂">
-<meta property="og:description" content="Toque para abrir e viver essa experiência mágica!">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://www.convitesmagia.com.br/mariacecilia/capa.png">
-
-<meta property="og:image" content="https://www.convitesmagia.com.br/mariacecilia/capa.png">
-<meta property="og:image:secure_url" content="https://www.convitesmagia.com.br/mariacecilia/capa.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
-
-<meta name="theme-color" content="#000000">
+<title>Maria Cecilia 4 anos</title>
 
 <style>
-body { margin: 0; background: #000; overflow: hidden; }
-.page { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease-in-out; }
-.page.active { display: flex; opacity: 1; }
-img, video { width: 100%; height: 100%; object-fit: contain; }
-#start { position: absolute; inset: 0; cursor: pointer; }
-.bg { width: 100%; height: 100%; background-size: cover; background-position: center; cursor: pointer; }
-.bg-preload { background-image: url('abrir.png'); display: none; }
+body {
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+}
+
+/* páginas */
+.page {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.page.active {
+    display: flex;
+    opacity: 1;
+}
+
+img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* clique invisível */
+#start {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+}
+
+/* tela abrir */
+.bg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+.bg-preload {
+    background-image: url('abrir.png');
+    display: none; 
+}
 </style>
 </head>
 
@@ -42,6 +67,7 @@ img, video { width: 100%; height: 100%; object-fit: contain; }
     <img src="pagina3.png" alt="Pré-carregamento">
     <img src="capa.png" alt="Pré-carregamento">
 </div>
+
 
 <div id="p1" class="page active">
     <img src="capa.png">
@@ -70,30 +96,50 @@ const video = document.getElementById('video');
 const pages = document.querySelectorAll('.page');
 
 function show(n) {
-    pages.forEach(p => { if (p.classList.contains('active')) p.classList.remove('active'); });
+    pages.forEach(p => {
+        if (p.classList.contains('active')) {
+            p.classList.remove('active');
+        }
+    });
+
     setTimeout(() => {
-        pages.forEach(p => { p.style.display = 'none'; });
+        pages.forEach(p => {
+            p.style.display = 'none';
+        });
+
         const nextPage = document.getElementById('p' + n);
         if (nextPage) {
             nextPage.style.display = 'flex';
-            requestAnimationFrame(() => { nextPage.classList.add('active'); });
+            requestAnimationFrame(() => {
+                 nextPage.classList.add('active');
+            });
         }
-    }, 10); 
+    }, 10);
 }
 
+/* CLIQUE ÚNICO – DESBLOQUEIA ÁUDIO + VÍDEO */
 document.getElementById('start').addEventListener('click', () => {
+
+    // AJUSTE: Abaixa o volume da música para o vídeo aparecer
     audio.volume = 0.2; 
-    audio.play().catch(e => console.error("Erro áudio:", e));
+    audio.play().catch(error => console.error("Erro áudio:", error));
+
     show(2);
+
+    // Garante que o vídeo não está mudo e toca
     video.muted = false;
-    video.play().catch(e => console.error("Erro vídeo:", e));
+    video.play().catch(error => console.error("Erro vídeo:", error));
+
 }, { once:true });
 
+/* FINAL DO VÍDEO */
 video.onended = () => {
+    // AJUSTE: Aumenta o volume da música novamente quando o vídeo acaba
     audio.volume = 1.0;
     show(3); 
 };
 
+/* ABRIR PDF */
 document.getElementById('abrir').onclick = () => {
     window.open('pagina3.pdf', '_blank');
     show(4);
