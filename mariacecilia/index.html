@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maria Cecilia 4 anos</title>
+<title>Maria Cecilia - 4 Anos</title>
 
-<meta property="og:title" content="Convite Interativo - Maria Cecilia">
-<meta property="og:description" content="Você recebeu um convite especial. Toque para abrir e viver essa experiência.">
+<meta property="og:title" content="Convite Especial: Maria Cecilia 🎂">
+<meta property="og:description" content="Você recebeu um convite interativo! Toque para abrir e viver essa experiência mágica de 4 anos.">
 <meta property="og:image" content="capa.png">
-<meta property="og:type" content="website">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <style>
 body {
@@ -42,14 +44,12 @@ img, video {
     object-fit: contain;
 }
 
-/* clique invisível */
 #start {
     position: absolute;
     inset: 0;
     cursor: pointer;
 }
 
-/* tela abrir */
 .bg {
     width: 100%;
     height: 100%;
@@ -123,25 +123,24 @@ function show(n) {
             });
         }
     }, 10); 
-
 }
 
-/* CLIQUE ÚNICO – DESBLOQUEIA ÁUDIO + VÍDEO */
+/* CLIQUE ÚNICO – DESBLOQUEIA TUDO */
 document.getElementById('start').addEventListener('click', () => {
-
-    audio.volume = 0.2; // Música baixinha
-    audio.play().catch(error => console.error("Falha ao iniciar o áudio:", error));
+    // Inicia música com volume reduzido para a fala do vídeo
+    audio.volume = 0.2; 
+    audio.play().catch(e => console.error("Erro áudio:", e));
 
     show(2);
 
-    video.muted = false; // Ativa o som do personagem
-    video.play().catch(error => console.error("Falha ao iniciar o vídeo:", error));
-
+    // Ativa som do vídeo (personagem)
+    video.muted = false;
+    video.play().catch(e => console.error("Erro vídeo:", e));
 }, { once:true });
 
 /* FINAL DO VÍDEO */
 video.onended = () => {
-    audio.volume = 1; // Música volta ao normal
+    audio.volume = 1.0; // Música volta ao volume máximo
     show(3); 
 };
 
