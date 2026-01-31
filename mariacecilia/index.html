@@ -5,19 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maria Cecilia 4 anos</title>
 
+<meta property="og:title" content="Convite Interativo - Maria Cecilia">
+<meta property="og:description" content="Você recebeu um convite especial. Toque para abrir e viver essa experiência.">
+<meta property="og:image" content="capa.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Maria Cecilia - 4 Anos">
-<meta property="og:description" content="Você recebeu um convite especial! Clique para abrir.">
-<meta property="og:url" content="https://molduracriativa.github.io/interativovideo/">
-
-<meta property="og:image" content="https://molduracriativa.github.io/interativovideo/capalink.png">
-<meta property="og:image:secure_url" content="https://molduracriativa.github.io/interativovideo/capalink.png">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://molduracriativa.github.io/interativovideo/capalink.png">
 <style>
 body {
     margin: 0;
@@ -33,7 +28,7 @@ body {
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out; 
 }
 
 .page.active {
@@ -127,28 +122,26 @@ function show(n) {
                  nextPage.classList.add('active');
             });
         }
-    }, 10);
+    }, 10); 
+
 }
 
 /* CLIQUE ÚNICO – DESBLOQUEIA ÁUDIO + VÍDEO */
 document.getElementById('start').addEventListener('click', () => {
 
-    // AJUSTE: Abaixa o volume da música para o vídeo aparecer
-    audio.volume = 0.2; 
-    audio.play().catch(error => console.error("Erro áudio:", error));
+    audio.volume = 0.2; // Música baixinha
+    audio.play().catch(error => console.error("Falha ao iniciar o áudio:", error));
 
     show(2);
 
-    // Garante que o vídeo não está mudo e toca
-    video.muted = false;
-    video.play().catch(error => console.error("Erro vídeo:", error));
+    video.muted = false; // Ativa o som do personagem
+    video.play().catch(error => console.error("Falha ao iniciar o vídeo:", error));
 
 }, { once:true });
 
 /* FINAL DO VÍDEO */
 video.onended = () => {
-    // AJUSTE: Aumenta o volume da música novamente quando o vídeo acaba
-    audio.volume = 1.0;
+    audio.volume = 1; // Música volta ao normal
     show(3); 
 };
 
