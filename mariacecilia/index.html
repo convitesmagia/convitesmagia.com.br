@@ -6,14 +6,16 @@
 <title>Maria Cecilia - 4 Anos</title>
 
 <meta property="og:title" content="Convite Especial: Maria Cecilia 🎂">
-<meta property="og:description" content="Você recebeu um convite interativo! Toque para abrir e viver essa experiência mágica de 4 anos.">
-<meta property="og:image" content="capa.png">
+<meta property="og:description" content="Você recebeu um convite interativo! Toque para abrir e ver essa surpresa.">
+<meta property="og:image" content="https://www.convitesmagia.com.br/mariacecilia/capa.png">
+<meta property="og:image:secure_url" content="https://www.convitesmagia.com.br/mariacecilia/capa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 
 <meta name="theme-color" content="#000000">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <style>
 body {
@@ -22,7 +24,6 @@ body {
     overflow: hidden;
 }
 
-/* páginas */
 .page {
     position: fixed;
     inset: 0;
@@ -76,7 +77,6 @@ img, video {
     <img src="capa.png" alt="Pré-carregamento">
 </div>
 
-
 <div id="p1" class="page active">
     <img src="capa.png">
     <div id="start"></div>
@@ -125,26 +125,27 @@ function show(n) {
     }, 10); 
 }
 
-/* CLIQUE ÚNICO – DESBLOQUEIA TUDO */
+/* CLIQUE ÚNICO – ATIVA SOM DO VÍDEO E BAIXA MÚSICA */
 document.getElementById('start').addEventListener('click', () => {
-    // Inicia música com volume reduzido para a fala do vídeo
+    // Música de fundo inicia em 20% para não abafar a fala
     audio.volume = 0.2; 
     audio.play().catch(e => console.error("Erro áudio:", e));
 
     show(2);
 
-    // Ativa som do vídeo (personagem)
+    // Vídeo com som ativado (personagem fala)
     video.muted = false;
     video.play().catch(e => console.error("Erro vídeo:", e));
 }, { once:true });
 
-/* FINAL DO VÍDEO */
+/* AO FINALIZAR O VÍDEO */
 video.onended = () => {
-    audio.volume = 1.0; // Música volta ao volume máximo
+    // Música volta ao volume máximo (100%)
+    audio.volume = 1.0;
     show(3); 
 };
 
-/* ABRIR PDF */
+/* AÇÃO DO BOTÃO ABRIR */
 document.getElementById('abrir').onclick = () => {
     window.open('pagina3.pdf', '_blank');
     show(4);
