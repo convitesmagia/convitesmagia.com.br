@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maria Cecilia 4 anos</title>
 
+<meta property="og:url" content="https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/">
+<meta property="og:image" content="https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/capalink.png">
+<meta property="og:image:secure_url" content="https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/capalink.png">
+<meta name="twitter:image" content="https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/capalink.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maria Cecilia - 4 Anos">
+<meta property="og:description" content="Você recebeu um convite especial! Clique para abrir.">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
+
 <style>
 body {
     margin: 0;
@@ -41,6 +54,10 @@ img, video {
     background-position: center;
     cursor: pointer;
 }
+.bg-preload {
+    background-image: url('abrir.png');
+    display: none; 
+}
 </style>
 </head>
 
@@ -49,6 +66,11 @@ img, video {
 <audio id="bgMusic" loop preload="auto">
     <source src="audio.mp3" type="audio/mpeg">
 </audio>
+
+<div style="display: none;">
+    <img src="pagina3.png" alt="Pré-carregamento">
+    <img src="capa.png" alt="Pré-carregamento">
+</div>
 
 <div id="p1" class="page active">
     <img src="capa.png">
@@ -69,6 +91,8 @@ img, video {
     <img src="pagina3.png">
 </div>
 
+<div class="bg-preload"></div>
+
 <script>
 const audio = document.getElementById('bgMusic');
 const video = document.getElementById('video');
@@ -76,43 +100,48 @@ const pages = document.querySelectorAll('.page');
 
 function show(n) {
     pages.forEach(p => {
-        p.classList.remove('active');
-        setTimeout(() => { p.style.display = 'none'; }, 500);
+        if (p.classList.contains('active')) {
+            p.classList.remove('active');
+        }
     });
 
     setTimeout(() => {
+        pages.forEach(p => {
+            p.style.display = 'none';
+        });
+
         const nextPage = document.getElementById('p' + n);
         if (nextPage) {
             nextPage.style.display = 'flex';
-            setTimeout(() => { nextPage.classList.add('active'); }, 50);
+            requestAnimationFrame(() => {
+                 nextPage.classList.add('active');
+            });
         }
-    }, 550);
+    }, 10);
 }
 
-// 1. INÍCIO: Ativa áudio baixo e muda para o vídeo
 document.getElementById('start').addEventListener('click', () => {
-    audio.volume = 0.2; // Volume baixo (20%) durante o vídeo
-    audio.play().catch(e => console.error("Erro áudio:", e));
-    
+    audio.volume = 0.2; 
+    audio.play().catch(error => console.error("Erro áudio:", error));
     show(2);
-    
-    video.currentTime = 0;
-    video.play().catch(e => console.error("Erro vídeo:", e));
-}, { once: true });
+    video.muted = false;
+    video.play().catch(error => console.error("Erro vídeo:", error));
+}, { once:true });
 
-// 2. FIM DO VÍDEO: Sobe o volume da música e vai para a próxima tela
 video.onended = () => {
-    audio.animate({ volume: 1.0 }, 1000); // Transição suave para volume máximo
-    audio.volume = 1.0; 
-    show(3);
+    audio.volume = 1.0;
+    show(3); 
 };
 
-// 3. NAVEGAÇÃO FINAL: A música continua tocando
 document.getElementById('abrir').onclick = () => {
     window.open('pagina3.pdf', '_blank');
     show(4);
 };
 </script>
+
+<div style="display: none !important; visibility: hidden; pointer-events: none;" aria-hidden="true">
+    © 2026 Cristiane Oliveira. Todos os direitos reservados. 
+</div>
 
 </body>
 </html>
