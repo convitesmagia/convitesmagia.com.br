@@ -23,6 +23,7 @@ body {
     margin: 0;
     background: #000;
     overflow: hidden;
+    font-family: sans-serif;
 }
 .page {
     position: fixed;
@@ -98,6 +99,7 @@ const audio = document.getElementById('bgMusic');
 const video = document.getElementById('video');
 const pages = document.querySelectorAll('.page');
 
+// Função para troca de páginas
 function show(n) {
     pages.forEach(p => {
         if (p.classList.contains('active')) {
@@ -120,22 +122,47 @@ function show(n) {
     }, 10);
 }
 
+// Função para aumentar o volume suavemente (Fade-In)
+function fadeInAudio(targetVolume, duration) {
+    const startVolume = audio.volume;
+    const diff = targetVolume - startVolume;
+    const step = diff / (duration / 50); // Incrementos a cada 50ms
+
+    const interval = setInterval(() => {
+        if (audio.volume < targetVolume) {
+            audio.volume = Math.min(targetVolume, audio.volume + step);
+        } else {
+            clearInterval(interval);
+        }
+    }, 50);
+}
+
+// 1. Ação ao clicar na Capa
 document.getElementById('start').addEventListener('click', () => {
+    // Começa com volume baixo (20%) para o vídeo
     audio.volume = 0.2; 
     audio.play().catch(error => console.error("Erro áudio:", error));
+    
     show(2);
-    video.muted = false;
+    video.muted = false; 
     video.play().catch(error => console.error("Erro vídeo:", error));
 }, { once:true });
 
+// 2. Ação quando o vídeo termina
 video.onended = () => {
-    audio.volume = 1.0;
+    // Sobe o volume suavemente até 100% em 2 segundos
+    fadeInAudio(1.0, 2000);
     show(3); 
 };
 
+// 3. Ação ao clicar em Abrir
 document.getElementById('abrir').onclick = () => {
     window.open('pagina3.pdf', '_blank');
     show(4);
+    // Garante que o volume esteja alto na última página
+    if (audio.volume < 1.0) {
+        fadeInAudio(1.0, 500);
+    }
 };
 </script>
 
